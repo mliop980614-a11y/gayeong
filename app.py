@@ -44,7 +44,7 @@ help_margin = "주식 신용융자(Margin Debt)의 전년대비 증가율입니�
 help_vix = "S&P 500 옵션 기반 변동성(공포) 지수입니다.\n• 5점(광기): 15 이하 | 4점(과열): 15 ~ 20 | 3점(중립): 20 ~ 30 | 2점(불안): 30 ~ 40 | 1점(공포): 40 이상"
 help_hy = "부실 기업 채권 금리와 국채 금리의 차이입니다.\n• 5점(광기): 3% 이하 | 4점(과열): 박스권 하단(3% ~ 3.5%) | 3점(중립): 3% ~ 5% 박스권 | 2점(불안): 5% 돌파 상승세 | 1점(공포): 5% 이상 폭등 후 하락 전환(진바닥) *7%이상 추가매수 금지*"
 help_nfci = "시카고 연준 발표 주간 전국금융상황지수입니다.\n• 0 이상(양수): 금융 시스템 스트레스 및 신용 경색 위험 고조\n• 0 이하(음수): 유동성이 풍부하고 리스크가 낮은 안정적 중기 투자 환경"
-help_rsi = "최근 14일간 주가 상승/하락 압력의 강도를 나타내는 단기 기술적 지표입니다.\n• 70 이상: 탐욕 구간 (과매수 단기 고점)\n• 30 이하: 투매 완료 구간 (과매도 기술적 바닥)"
+help_rsi = "최근 14일간 주가 상승/하락 압력의 강도를 나타내는 단기 기술적 지표입니다.\n• 70 이상: 탐욕 구간 (과매수 단기 고점)\n• 30 이하: 투매 완료 구간 (과매도 기술적 바닥) *숫자가 작을수록 금융안정*"
 
 # --- 데이터 로드 (정확한 수익률 계산을 위해 5년 데이터 패치) ---
 @st.cache_data(ttl=14400)
@@ -137,7 +137,7 @@ if "SP500" in yf_data and "VIX" in yf_data:
 
     with col2:
         score_df = pd.DataFrame({
-            "역발상 핵심 지표 (💡마우스 올리면 기준 팝업)": [
+            "💡 역발상 핵심 지표": [
                 "Bull/Bear Spread (주간)", "Put/Call Ratio (일간)", 
                 "Margin Debt 증가율 (월간)", "VIX 공포지수 (자동)", "High-Yield 스프레드 (자동)"
             ],
@@ -147,6 +147,44 @@ if "SP500" in yf_data and "VIX" in yf_data:
         })
         st.table(score_df.set_index("역발상 핵심 지표 (💡마우스 올리면 기준 팝업)"))
 
+
+# --- 사이드바 하단에 추가 ---
+st.sidebar.markdown("---")
+st.sidebar.markdown("### 🌡️ 공포탐욕지수 (Fear & Greed)")
+fg_input = st.sidebar.slider("현재 지수 (0~100)", 0, 100, 50, help="0: 극도의 공포(매수 기회) | 100: 극도의 탐욕(매도 기회)")
+
+# 점수에 따른 상태값 자동 분류
+if fg_input <= 25: fg_status = "극도의 공포 🟢"
+elif fg_input <= 45: fg_status = "공포 🔵"
+elif fg_input <= 55: fg_status = "중립 🟡"
+elif fg_input <= 75: fg_status = "탐욕 🟠"
+else: fg_status = "극도의 탐욕 🔴"
+    # --- 메인 하단 영역 ---
+st.markdown("---")
+st.markdown("### 📉 시장 심리 및 금융 스트레스 추이")
+c_fg, c_nfci = st.columns(2)
+
+with c_fg:
+    st.subheader("공포탐욕지수 (현재: " + fg_status + ")")
+    # Plotly 게이지 차트로 직관적 시각화
+    fig_fg = go.Figure(go.Indicator(
+        mode="gauge+number",
+        value=fg_input,
+        gauge={'axis': {'range': [0, 100]},
+               'bar': {'color': "red" if fg_input > 75 else "green" if fg_input < 25 else "gray"}},
+        domain={'x': [0, 1], 'y': [0, 1]}
+    ))
+    fig_fg.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
+    st.plotly_chart(fig_fg, use_container_width=True)
+
+with c_nfci:
+    st.subheader("NFCI (전국금융상황지수)")
+    # 기존에 사용 중인 NFCI 데이터 로직이 있다면 fig_nfci를 호출하세요
+    # 예시: fig_nfci = ...
+    st.plotly_chart(fig_nfci, use_container_width=True)
+
+    
+    
     # ---------------------------------------------------------
     # 📐 [화면순서 복원 - 섹션 2]: 멀티 자산 장기 이격도 및 섹터별 상세 추세 레이더
     # ---------------------------------------------------------
