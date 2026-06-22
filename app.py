@@ -154,17 +154,17 @@ st.sidebar.markdown("### 🌡️ 공포탐욕지수 (Fear & Greed)")
 fg_input = st.sidebar.slider("현재 지수 (0~100)", 0, 100, 50, help="0: 극도의 공포(매수 기회) | 100: 극도의 탐욕(매도 기회)")
 
 # 점수에 따른 상태값 자동 분류
-if fg_input <= 25: fg_status = "극도의 공포 🟢"
-elif fg_input <= 45: fg_status = "공포 🔵"
-elif fg_input <= 55: fg_status = "중립 🟡"
-elif fg_input <= 75: fg_status = "탐욕 🟠"
-else: fg_status = "극도의 탐욕 🔴"
+    if fg_input <= 25: fg_status = "극도의 공포 🟢"
+    elif fg_input <= 45: fg_status = "공포 🔵"
+    elif fg_input <= 55: fg_status = "중립 🟡"
+    elif fg_input <= 75: fg_status = "탐욕 🟠"
+    else: fg_status = "극도의 탐욕 🔴"
     # --- 메인 하단 영역 ---
 st.markdown("---")
 st.markdown("### 📉 시장 심리 및 금융 스트레스 추이")
 c_fg, c_nfci = st.columns(2)
 
-with c_fg:
+    with c_fg:
     st.subheader("공포탐욕지수 (현재: " + fg_status + ")")
     # Plotly 게이지 차트로 직관적 시각화
     fig_fg = go.Figure(go.Indicator(
@@ -177,7 +177,7 @@ with c_fg:
     fig_fg.update_layout(height=250, margin=dict(l=20, r=20, t=30, b=20))
     st.plotly_chart(fig_fg, use_container_width=True)
 
-with c_nfci:
+    with c_nfci:
     st.subheader("NFCI (전국금융상황지수)")
     # 기존에 사용 중인 NFCI 데이터 로직이 있다면 fig_nfci를 호출하세요
     # 예시: fig_nfci = ...
