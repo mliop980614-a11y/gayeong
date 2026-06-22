@@ -137,7 +137,7 @@ if "SP500" in yf_data and "VIX" in yf_data:
 
     with col2:
         score_df = pd.DataFrame({
-            "💡 역발상 핵심 지표": [
+            "💡역발상 핵심 지표": [
                 "Bull/Bear Spread (주간)", "Put/Call Ratio (일간)", 
                 "Margin Debt 증가율 (월간)", "VIX 공포지수 (자동)", "High-Yield 스프레드 (자동)"
             ],
@@ -145,7 +145,7 @@ if "SP500" in yf_data and "VIX" in yf_data:
             "판단 구간": [bb_status, pc_status, margin_status, vix_status, hy_status],
             "배정 점수": [f"{bb_score} / 5", f"{pc_score} / 5", f"{margin_score} / 5", f"{vix_score} / 5", f"{hy_score} / 5"]
         })
-        st.table(score_df.set_index("역발상 핵심 지표 (💡마우스 올리면 기준 팝업)"))
+        st.table(score_df.set_index("💡역발상 핵심 지표"))
 
 
     
