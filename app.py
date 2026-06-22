@@ -154,7 +154,7 @@ st.sidebar.markdown("### 🌡️ 공포탐욕지수 (Fear & Greed)")
 fg_input = st.sidebar.slider("현재 지수 (0~100)", 0, 100, 50, help="0: 극도의 공포(매수 기회) | 100: 극도의 탐욕(매도 기회)")
 
 # 점수에 따른 상태값 자동 분류
-    if fg_input <= 25: fg_status = "극도의 공포 🟢"
+if fg_input <= 25: fg_status = "극도의 공포 🟢"
     elif fg_input <= 45: fg_status = "공포 🔵"
     elif fg_input <= 55: fg_status = "중립 🟡"
     elif fg_input <= 75: fg_status = "탐욕 🟠"
