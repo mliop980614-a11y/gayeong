@@ -50,7 +50,7 @@ help_rsi = "최근 14일간 주가 상승/하락 압력의 강도를 나타내�
 @st.cache_data(ttl=14400)
 def load_v45_data():
     tickers = {
-        "SP500": "^GSPC", "NASDAQ": "^IXIC", "SOXX": "SOXX", "SCHD": "SCHD",
+        "SP500": "SPY", "NASDAQ": "QQQ", "SOXX": "SOXX", "SCHD": "SCHD",
         "GOLD": "GC=F", "FINANCIAL": "XLF", "ENERGY": "XLE",
         "DXY": "DX-Y.NYB", "USD_KRW": "KRW=X", "VIX": "^VIX",
         "QQQ": "QQQ", "QLD": "QLD",
