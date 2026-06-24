@@ -93,6 +93,8 @@ if "SP500" in yf_data and "VIX" in yf_data:
     else: margin_score, margin_status = 1, "공포 🟢"
 
     vix_curr = (yf_data["VIX"]['Close'].iloc[:, 0] if isinstance(yf_data["VIX"]['Close'], pd.DataFrame) else yf_data["VIX"]['Close']).iloc[-1]
+    st.sidebar.metric("VIX (공포지수)", f"{vix_curr:.2f}", help=help_vix)
+    
     if vix_curr <= 15: vix_score, vix_status = 5, "광기 🔴"
     elif vix_curr <= 20: vix_score, vix_status = 4, "과열 🟠"
     elif vix_curr <= 30: vix_score, vix_status = 3, "중립 🟡"
@@ -321,8 +323,8 @@ if "SP500" in yf_data and "VIX" in yf_data:
         
     with c_fx2:
         fig_fx = make_subplots(specs=[[{"secondary_y": True}]])
-        fig_fx.add_trace(go.Scatter(x=yf_data["DXY"].index[-252:], y=yf_data["DXY"]['Close'].iloc[-252:,0] if isinstance(yf_data["DXY"]['Close'], pd.DataFrame) else yf_data["DXY"]['Close'].iloc[-252:], name="달러 지수 (DXY)", line=dict(color='#00FFBB', width=2)), secondary_y=False)
-        fig_fx.add_trace(go.Scatter(x=yf_data["USD_KRW"].index[-252:], y=yf_data["USD_KRW"]['Close'].iloc[-252:,0] if isinstance(yf_data["USD_KRW"]['Close'], pd.DataFrame) else yf_data["USD_KRW"]['Close'].iloc[-252:], name="원/달러 환율 (KRW)", line=dict(color='#FF5555', width=1.5, dash='dot')), secondary_y=True)
+        fig_fx.add_trace(go.Scatter(x=yf_data["DXY"].index[-252:], y=yf_data["DXY"]['Close'].iloc[-252:,0] if isinstance(yf_data["DXY"]['Close'], pd.DataFrame) else yf_data["DXY"]['Close'].iloc[-252:], name="DXY", line=dict(color="#3B82F6", width=2)))
+        fig_fx.add_trace(go.Scatter(x=yf_data["USD_KRW"].index[-252:], y=yf_data["USD_KRW"]['Close'].iloc[-252:,0] if isinstance(yf_data["USD_KRW"]['Close'], pd.DataFrame) else yf_data["USD_KRW"]['Close'].iloc[-252:], name="USD/KRW", line=dict(color="#00FFBB", width=2)), secondary_y=True)
         fig_fx.update_layout(template="plotly_dark", height=220, margin=dict(l=10,r=10,t=10,b=10), showlegend=True)
         st.plotly_chart(fig_fx, use_container_width=True)
 
